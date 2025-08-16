@@ -1,14 +1,15 @@
 import { zodToJsonSchema } from "zod-to-json-schema";
 
-import { GetConsoleLogsTool, ScreenshotTool } from "@repo/types/mcp/tool";
+import { GetConsoleLogsTool, ScreenshotTool } from "@/repo/types/mcp/tool";
 
 import { Tool } from "./tool";
+import { normalizeJsonSchemaTypes } from "./common";
 
 export const getConsoleLogs: Tool = {
   schema: {
     name: GetConsoleLogsTool.shape.name.value,
     description: GetConsoleLogsTool.shape.description.value,
-    inputSchema: zodToJsonSchema(GetConsoleLogsTool.shape.arguments),
+  inputSchema: normalizeJsonSchemaTypes(zodToJsonSchema(GetConsoleLogsTool.shape.arguments)),
   },
   handle: async (context, _params) => {
     const consoleLogs = await context.sendSocketMessage(
@@ -16,7 +17,7 @@ export const getConsoleLogs: Tool = {
       {},
     );
     const text: string = consoleLogs
-      .map((log) => JSON.stringify(log))
+      .map((log: any) => JSON.stringify(log))
       .join("\n");
     return {
       content: [{ type: "text", text }],
@@ -28,7 +29,7 @@ export const screenshot: Tool = {
   schema: {
     name: ScreenshotTool.shape.name.value,
     description: ScreenshotTool.shape.description.value,
-    inputSchema: zodToJsonSchema(ScreenshotTool.shape.arguments),
+  inputSchema: normalizeJsonSchemaTypes(zodToJsonSchema(ScreenshotTool.shape.arguments)),
   },
   handle: async (context, _params) => {
     const screenshot = await context.sendSocketMessage(

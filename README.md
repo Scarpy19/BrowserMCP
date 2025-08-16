@@ -1,7 +1,3 @@
-<a href="https://browsermcp.io">
-  <img src="./.github/images/banner.png" alt="Browser MCP banner">
-</a>
-
 <h3 align="center">Browser MCP</h3>
 
 <p align="center">
